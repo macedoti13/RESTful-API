@@ -7,6 +7,8 @@ app = Flask(__name__)
 api = Api(app)
 
 df = pd.read_csv('constituents-financials.csv')
+
+# columns in the 'int64' data type causes problems for the api, I just turned it into 'float64'
 df['Market Cap'] = df['Market Cap'].astype('float64')
 
 def abort_if_company_doesnt_exist(company_id):
