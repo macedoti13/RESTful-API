@@ -72,8 +72,6 @@ class CompanyList(Resource):
     def post():
         pass
 
-    pass
-
 api.add_resource(CompanyList, '/company')
 api.add_resource(Company, '/company/<int:company_id>')
 
