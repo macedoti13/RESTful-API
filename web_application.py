@@ -35,4 +35,46 @@ parser.add_argument('Price/Sales')
 parser.add_argument('Price/Book') 
 parser.add_argument('SEC Filings')
 
+class Company(Resource):
+    # consulta
+    def get(self, company_id):
+        abort_if_company_doesnt_exist(company_id)
+        company = dict(df.loc[company_id])
+        return company
+
+    # atualização 
+    def set():
+        pass
+
+    # inserção
+    def put():
+        args = parser.parse_args()
+        content = {'Symbol': args['Symbol'], 'Name': args['Name'], 'Sector': args['Sector'],
+                    'Price': args['Price'], 'Price/Earnings': args['Price/Earnings'], 'Dividend Yield':args['Dividend Yield'],
+                    'Earnings/Share': args['Earnings/Share'], '52 Week Low': args['52 Week Low'], 
+                    '52 Week high': args['52 Week high'], 'Market Cap':args['Market Cap'], 'EBITDA':args['EBITDA'],
+                    'Price/Sales':args['Price/Sales'], 'Price/Book':args['Price/Book'], 'SEC Filings':args['SEC Filings']}
+        df = df.append(content, ignore_index=True)
+        return content, 201
+
+    # deleção
+    def delete(self, company_id):
+        abort_if_company_doesnt_exist(company_id)
+        df.drop(company_id, inplace=True)
+        pass
+
+class CompanyList(Resource):
+    # consulta
+    def get():
+        pass
+
+    # aumenta a lista 
+    def post():
+        pass
+
+    pass
+
+api.add_resource(CompanyList, '/company')
+api.add_resource(Company, '/company/<int:company_id>')
+
 app.run(debug=True)
