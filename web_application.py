@@ -43,17 +43,42 @@ class Company(Resource):
         return company
 
     # atualização 
-    def set():
-        pass
+    def set(self, company_id):
+        args = parser.parse_args()
+        content = {'Symbol': args['Symbol'], 
+                   'Name': args['Name'], 
+                   'Sector': args['Sector'],
+                   'Price': args['Price'], 
+                   'Price/Earnings': args['Price/Earnings'], 
+                   'Dividend Yield':args['Dividend Yield'],
+                   'Earnings/Share': args['Earnings/Share'], 
+                   '52 Week Low': args['52 Week Low'], 
+                   '52 Week high': args['52 Week high'], 
+                   'Market Cap':args['Market Cap'], 
+                   'EBITDA':args['EBITDA'],
+                   'Price/Sales':args['Price/Sales'], 
+                   'Price/Book':args['Price/Book'], 
+                   'SEC Filings':args['SEC Filings']}
+        df.loc[company_id] = content
+        return content, 201
 
     # inserção
-    def put():
+    def put(self):
         args = parser.parse_args()
-        content = {'Symbol': args['Symbol'], 'Name': args['Name'], 'Sector': args['Sector'],
-                    'Price': args['Price'], 'Price/Earnings': args['Price/Earnings'], 'Dividend Yield':args['Dividend Yield'],
-                    'Earnings/Share': args['Earnings/Share'], '52 Week Low': args['52 Week Low'], 
-                    '52 Week high': args['52 Week high'], 'Market Cap':args['Market Cap'], 'EBITDA':args['EBITDA'],
-                    'Price/Sales':args['Price/Sales'], 'Price/Book':args['Price/Book'], 'SEC Filings':args['SEC Filings']}
+        content = {'Symbol': args['Symbol'], 
+                   'Name': args['Name'], 
+                   'Sector': args['Sector'],
+                   'Price': args['Price'], 
+                   'Price/Earnings': args['Price/Earnings'], 
+                   'Dividend Yield':args['Dividend Yield'],
+                   'Earnings/Share': args['Earnings/Share'], 
+                   '52 Week Low': args['52 Week Low'], 
+                   '52 Week high': args['52 Week high'], 
+                   'Market Cap':args['Market Cap'], 
+                   'EBITDA':args['EBITDA'],
+                   'Price/Sales':args['Price/Sales'], 
+                   'Price/Book':args['Price/Book'], 
+                   'SEC Filings':args['SEC Filings']}
         df = df.append(content, ignore_index=True)
         return content, 201
 
@@ -65,8 +90,9 @@ class Company(Resource):
 
 class CompanyList(Resource):
     # consulta
-    def get():
-        pass
+    def get(self):
+        companies = dict(df)
+        return companies
 
     # aumenta a lista 
     def post():
