@@ -91,12 +91,11 @@ class Company(Resource):
 class CompanyList(Resource):
     # consulta
     def get(self):
-        companies = dict(df)
+        companies = {}
+        for index in df.index:
+            company = dict(df.loc[index])
+            companies[index] = company
         return companies
-
-    # aumenta a lista 
-    def post():
-        pass
 
 api.add_resource(CompanyList, '/company')
 api.add_resource(Company, '/company/<int:company_id>')
