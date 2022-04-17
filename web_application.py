@@ -55,10 +55,10 @@ class Company(Resource):
                    '52 Week Low': args['52 Week Low'], 
                    '52 Week high': args['52 Week high'], 
                    'Market Cap':args['Market Cap'], 
-                   'EBITDA':args['EBITDA'],
-                   'Price/Sales':args['Price/Sales'], 
-                   'Price/Book':args['Price/Book'], 
-                   'SEC Filings':args['SEC Filings']}
+                   'EBITDA': args['EBITDA'],
+                   'Price/Sales': args['Price/Sales'], 
+                   'Price/Book': args['Price/Book'], 
+                   'SEC Filings': args['SEC Filings']}
         df.loc[company_id] = content
         return content, 201
 
@@ -74,11 +74,11 @@ class Company(Resource):
                    'Earnings/Share': args['Earnings/Share'], 
                    '52 Week Low': args['52 Week Low'], 
                    '52 Week high': args['52 Week high'], 
-                   'Market Cap':args['Market Cap'], 
-                   'EBITDA':args['EBITDA'],
-                   'Price/Sales':args['Price/Sales'], 
-                   'Price/Book':args['Price/Book'], 
-                   'SEC Filings':args['SEC Filings']}
+                   'Market Cap': args['Market Cap'], 
+                   'EBITDA': args['EBITDA'],
+                   'Price/Sales': args['Price/Sales'], 
+                   'Price/Book': args['Price/Book'], 
+                   'SEC Filings': args['SEC Filings']}
         df = df.append(content, ignore_index=True)
         return content, 201
 
