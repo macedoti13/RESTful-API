@@ -1,3 +1,8 @@
+# Tarefa realizada por:
+# Thiago Macedo - 21104690
+# Vitor Pires - 21101680
+# Erik Mondin - 
+
 from flask import Flask
 from flask_restful import reqparse, abort, Api, Resource
 import pandas as pd
