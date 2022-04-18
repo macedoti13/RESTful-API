@@ -43,7 +43,7 @@ class Company(Resource):
         return company
 
     # atualização 
-    def set(self, company_id):
+    def patch(self, company_id):
         args = parser.parse_args()
         content = {'Symbol': args['Symbol'], 
                    'Name': args['Name'], 
