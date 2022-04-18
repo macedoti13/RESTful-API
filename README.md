@@ -8,7 +8,7 @@ O S&aPi 500 disponibiliza uma API RESTful que permite acesso aos dados financeir
 
 | Método        | Descrição                        | 
 | ------------- |:-------------:                   | 
-| GET           | pega uma ou todas as empresas    | 
-| POST          | adiciona uma empresa no final    |   
-| PUT           | atualiza os dados de uma empresa | 
-| DELETE        | deleta os dados de uma empresa   | 
+| GET           | Pega uma ou todas as empresas.   | 
+| POST          | Adiciona uma empresa no final.   |   
+| PUT           | Atualiza os dados de uma empresa.| 
+| DELETE        | Deleta os dados de uma empresa.  | 
