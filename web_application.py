@@ -6,16 +6,9 @@ app = Flask(__name__)
 api = Api(app)
 
 df = pd.read_csv('constituents-financials.csv')
-
-# columns in the 'int64' data type causes problems for the api, I just turned it into 'float64'
 df['Market Cap'] = df['Market Cap'].astype('float64')
 
 def abort_if_company_doesnt_exist(company_id):
-    """ Aborts if the user tries to search for a company that doesn't exist
-
-    Args:
-        company_id (int64): company index in the dataframe (from 0 to 504)
-    """
     if company_id not in df.index:
         abort(404, message=f'Company {company_id} doesn\'t exist')
 
@@ -36,14 +29,16 @@ parser.add_argument('Price/Book')
 parser.add_argument('SEC Filings')
 
 class Company(Resource):
-    # consulta
     def get(self, company_id):
         abort_if_company_doesnt_exist(company_id)
-        company = dict(df.loc[company_id])
-        return company
+        return dict(df.loc[company_id])
 
-    # atualização 
-    def patch(self, company_id):
+    def delete(self, company_id):
+        abort_if_company_doesnt_exist(company_id)
+        df.drop(company_id, inplace=True)
+        return 'deleted', 201
+
+    def put(self, company_id):
         args = parser.parse_args()
         content = {'Symbol': args['Symbol'], 
                    'Name': args['Name'], 
@@ -53,43 +48,17 @@ class Company(Resource):
                    'Dividend Yield':args['Dividend Yield'],
                    'Earnings/Share': args['Earnings/Share'], 
                    '52 Week Low': args['52 Week Low'], 
-                   '52 Week high': args['52 Week high'], 
-                   'Market Cap':args['Market Cap'], 
-                   'EBITDA': args['EBITDA'],
-                   'Price/Sales': args['Price/Sales'], 
-                   'Price/Book': args['Price/Book'], 
-                   'SEC Filings': args['SEC Filings']}
-        df.loc[company_id] = content
-        return content, 201
-
-    # inserção
-    def put(self):
-        args = parser.parse_args()
-        content = {'Symbol': args['Symbol'], 
-                   'Name': args['Name'], 
-                   'Sector': args['Sector'],
-                   'Price': args['Price'], 
-                   'Price/Earnings': args['Price/Earnings'], 
-                   'Dividend Yield':args['Dividend Yield'],
-                   'Earnings/Share': args['Earnings/Share'], 
-                   '52 Week Low': args['52 Week Low'], 
-                   '52 Week high': args['52 Week high'], 
+                   '52 Week high': args['52 Week High'], 
                    'Market Cap': args['Market Cap'], 
                    'EBITDA': args['EBITDA'],
                    'Price/Sales': args['Price/Sales'], 
                    'Price/Book': args['Price/Book'], 
                    'SEC Filings': args['SEC Filings']}
-        df = df.append(content, ignore_index=True)
+        df.loc[company_id] = content
+        abort_if_company_doesnt_exist(company_id)
         return content, 201
 
-    # deleção
-    def delete(self, company_id):
-        abort_if_company_doesnt_exist(company_id)
-        df.drop(company_id, inplace=True)
-        pass
-
 class CompanyList(Resource):
-    # consulta
     def get(self):
         companies = {}
         for index in df.index:
@@ -97,7 +66,28 @@ class CompanyList(Resource):
             companies[index] = company
         return companies
 
-api.add_resource(CompanyList, '/company')
+    def post(self):
+        args = parser.parse_args()
+        company_id = max(df.index) + 1
+        content = {'Symbol': args['Symbol'], 
+                   'Name': args['Name'], 
+                   'Sector': args['Sector'],
+                   'Price': args['Price'], 
+                   'Price/Earnings': args['Price/Earnings'], 
+                   'Dividend Yield':args['Dividend Yield'],
+                   'Earnings/Share': args['Earnings/Share'], 
+                   '52 Week Low': args['52 Week Low'], 
+                   '52 Week high': args['52 Week High'], 
+                   'Market Cap': args['Market Cap'], 
+                   'EBITDA': args['EBITDA'],
+                   'Price/Sales': args['Price/Sales'], 
+                   'Price/Book': args['Price/Book'], 
+                   'SEC Filings': args['SEC Filings']}
+        df.loc[company_id] = content
+        return str(company_id)+' inserido como sucesso'
+
+
 api.add_resource(Company, '/company/<int:company_id>')
+api.add_resource(CompanyList, '/companies')
 
 app.run(debug=True)
